@@ -119,6 +119,25 @@ def update_status_config(milestones_content):
     return STATUSES
 
 
+def get_variation_from_env(envvar_value):
+    """Return a tuple with variation data from the specific environment
+    variable key.
+
+    Raise an exception if the passed in envvar doesn't look something
+    like: '0 100'
+    """
+    try:
+        # We want to create a tuple of integers from a string containing
+        # integers. Anything else should throw.
+        rv = tuple(int(x) for x in envvar_value.strip().split(' '))
+        if (len(rv) is not 2):
+            raise Exception('The format is incorrect. Expected "{int} {int}"?')
+    except Exception as e:
+        print("Something went wrong: {0}".format(e))
+        raise e
+    return rv
+
+
 THREADS_PER_PAGE = 8
 
 # ~3 months-ish expires for static junk
@@ -200,14 +219,20 @@ EXTRA_LABELS = [
     'type-webvr',
 ]
 
+# Get AB experiment variation values from the environement.
+# By default, it will serve v1 100% of the time.
+FORM_V1_VARIATION = os.environ.get('FORM_V1_VARIATION') or '0 100'
+FORM_V2_VARIATION = os.environ.get('FORM_V2_VARIATION') or '100 100'
+EXP_MAX_AGE = os.environ.get('EXP_MAX_AGE', None)
+
 # AB testing config
 AB_EXPERIMENTS = {
     'exp': {
         'variations': {
-            'form-v1': (0, 100),
-            'form-v2': (100, 100)
+            'form-v1': get_variation_from_env(FORM_V1_VARIATION),
+            'form-v2': get_variation_from_env(FORM_V2_VARIATION),
         },
-        'max-age': None
+        'max-age': EXP_MAX_AGE
     }
 }
 

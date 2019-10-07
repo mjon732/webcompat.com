@@ -11,6 +11,7 @@ import os
 import unittest
 
 from config import update_status_config
+from config import get_variation_from_env
 from webcompat import webcompat
 
 
@@ -52,6 +53,19 @@ class TestConfig(unittest.TestCase):
         milestones_json = json_data('milestones_content_plus.json')
         actual = update_status_config(milestones_json)
         self.assertEqual(actual, expected)
+
+    def test_get_variation_from_env(self):
+        """Make sure it doesn't blow up when it shouldn't, and does when
+        it should.
+        """
+        self.assertRaises(Exception, get_variation_from_env, 'a b')
+        self.assertRaises(Exception, get_variation_from_env, 'None')
+        self.assertRaises(Exception, get_variation_from_env, '')
+        self.assertRaises(Exception, get_variation_from_env, 2)
+        self.assertRaises(Exception, get_variation_from_env, '1 2 3')
+        self.assertRaises(Exception, get_variation_from_env, '1 ')
+        self.assertTupleEqual((1, 2), get_variation_from_env('1 2'))
+        self.assertTupleEqual((1, 2), get_variation_from_env(' 1 2 '))
 
 
 if __name__ == '__main__':
