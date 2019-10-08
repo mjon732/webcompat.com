@@ -55,8 +55,8 @@ class TestConfig(unittest.TestCase):
         self.assertEqual(actual, expected)
 
     def test_get_variation_from_env(self):
-        """Make sure it doesn't blow up when it shouldn't, and does when
-        it should.
+        """
+        Check the conversion from string to tuples of two int.
         """
         self.assertRaises(Exception, get_variation_from_env, 'a b')
         self.assertRaises(Exception, get_variation_from_env, 'None')
