@@ -59,7 +59,7 @@ BugForm.prototype.onDOMReadyInit = function() {
   this.step6Radio = $(".step-container.step6 .input-control input");
   this.step7Container = $(".step-container.step7");
   this.step8Container = $(".step-container.step8");
-  this.step9Container = $(".step-container.step9");
+  // Step 9 is a lie.
   this.step10Container = $(".step-container.step10");
   this.step11Container = $(".step-container.step11");
   this.anonUsernameTrigger = $("#open-username");
@@ -111,7 +111,7 @@ BugForm.prototype.onDOMReadyInit = function() {
     this.step6Container,
     this.step7Container,
     this.step8Container,
-    this.step9Container,
+    // Step 9 is a lie.
     this.step10Container,
     this.step11Container
   ];
